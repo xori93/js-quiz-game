@@ -20,8 +20,8 @@ const explanation = document.getElementById("explanation");
 // Optional sounds
 const correctSound = new Audio("mixkit-correct.wav");
 const wrongSound = new Audio("mixkit-wrong.wav");
-correctSound.play().catch(e => console.log("Sound blocked:", e));
-wrongSound.play().catch(e => console.log("Sound blocked:", e));
+// correctSound.play().catch(e => console.log("Sound blocked:", e));
+// wrongSound.play().catch(e => console.log("Sound blocked:", e));
 
 // Quiz data
 const questions = [
@@ -491,7 +491,7 @@ function selectAnswer(button, answer) {
     score++;
     scoreElement.textContent = `Score: ${score}`;
     button.classList.add("correct");
-    correctSound.play();
+    // correctSound.play();
   } else {
     button.classList.add("wrong");
     wrongSound.play();
