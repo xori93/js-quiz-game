@@ -17,6 +17,8 @@ const scoreElement = document.getElementById("score");
 const progressBar = document.getElementById("progress-bar");
 const explanation = document.getElementById("explanation");
 
+
+
 // Optional sounds
 const correctSound = new Audio("mixkit-correct.wav");
 const wrongSound = new Audio("mixkit-wrong.wav");
@@ -491,10 +493,14 @@ function selectAnswer(button, answer) {
     score++;
     scoreElement.textContent = `Score: ${score}`;
     button.classList.add("correct");
+    correctSound.currentTime = 0;
+    correctSound.play().catch(error=> console.log("correct sound failed", error))
     // correctSound.play();
   } else {
     button.classList.add("wrong");
-    wrongSound.play();
+    wrongSound.currentTime = 0;
+    wrongSound.play().catch(error=> console.log("Wrong sound failed", error))
+    // wrongSound.play();
     // highlight correct answer
     Array.from(answersElement.children).forEach(btn => {
       if (btn.textContent === quest.correct) btn.classList.add("correct");
