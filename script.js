@@ -455,6 +455,10 @@ function showQuestion() {
   const quest = questions[currentQuestion];
   questionElement.textContent = quest.question;
 
+//   answersElement.innerHTML = "<p>Read Question carefully</p>"
+   
+// setTimeout(()=>{
+   answersElement.innerHTML = ""
   quest.answers.forEach(answer => {
     const button = document.createElement("button");
     button.textContent = answer;
@@ -470,6 +474,11 @@ function showQuestion() {
 if (userAnswers[currentQuestion] !== undefined) {
   restorePreviousAnswers();
 }
+}
+// , 4000);
+
+
+  
 
 // added styling to the back button
 backBtn.style.display = currentQuestion === 0 ? "none" : "inline-block";
@@ -477,7 +486,7 @@ backBtn.style.display = currentQuestion === 0 ? "none" : "inline-block";
   // Update progress bar
   const progress = ((currentQuestion) / questions.length) * 100;
   progressBar.style.width = `${progress}%`;
-}
+
 
 // Select answer
 function selectAnswer(button, answer) {
@@ -513,7 +522,7 @@ function selectAnswer(button, answer) {
     currentQuestion++;
     if (currentQuestion < questions.length) showQuestion();
     else showFinalScore();
-  }, 6000);
+  }, 20000);
 }
 
 function restorePreviousAnswers() {
