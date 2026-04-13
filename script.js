@@ -18,8 +18,10 @@ const progressBar = document.getElementById("progress-bar");
 const explanation = document.getElementById("explanation");
 
 // Optional sounds
-const correctSound = new Audio("correct.mp3"); // add correct.mp3 in project folder
-const wrongSound = new Audio("wrong.mp3");
+const correctSound = new Audio("mixkit-correct.way"); // add correct.mp3 in project folder
+const wrongSound = new Audio("mixkit-wrong.wav");
+correctSound.play().catch(e => console.log("Sound blocked:", e));
+wrongSound.play().catch(e => console.log("Sound blocked:", e));
 
 // Quiz data
 const questions = [

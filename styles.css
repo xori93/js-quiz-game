@@ -187,3 +187,14 @@ body {
   75% { transform: translateX(-5px); }
   100% { transform: translateX(0); }
 }
+
+/* FOOTER */
+
+/* FOOTER */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
