@@ -1,14 +1,11 @@
-// Arrays of objects
-// Tracking index
-// Updating UI dynamically
-
-
-// Render answers as buttons
-// Track score
-// Go to next question
-// Show final score
 
 // DOM elements
+const welcomeScreen = document.getElementById("welcome");
+const nameInput = document.getElementById("nameInput");
+const startBtn = document.getElementById("startBtn");
+const livesElement = document.getElementById("lives");
+
+const container = document.querySelector(".container")
 const questionElement = document.getElementById("question");
 const answersElement = document.getElementById("answers");
 const backBtn = document.getElementById("backBtn");
@@ -18,6 +15,24 @@ const progressBar = document.getElementById("progress-bar");
 const explanation = document.getElementById("explanation");
 
 
+if (startBtn){
+
+   startBtn.addEventListener("click", () => {
+  const name = nameInput.value.trim();
+
+  if (!name) {
+    alert("Please enter your name to start!");
+    return;
+  }
+
+  localStorage.setItem("quizPlayerName", name);
+  window.location.href = "quiz.html"
+  // welcomeScreen.classList.add("hidden");
+  // container.classList.remove("hidden");
+
+
+});
+}
 
 // Optional sounds
 const correctSound = new Audio("mixkit-correct.wav");
@@ -438,16 +453,43 @@ let userAnswers = [];
 let autoNextTimeOut = 0
 
 // Start quiz
-function startQuiz() {
+// function startQuiz(name) {
+//   currentQuestion = 0;
+//   score = 0;
+//   userAnswers = [];
+//   clearTimeout(autoNextTimeOut);
+//   nextBtn.textContent = "Next"
+//   // nextBtn.style.display = "none";
+//   scoreElement.textContent = `Score: ${score}`;
+//   showQuestion();
+
+//   // Show greeting
+//   questionElement.textContent = `Welcome, ${name}! Get ready... 🚀`;
+
+//   setTimeout(() => showQuestion(), 2000); // brief greeting then start
+// }
+
+function startQuiz(name) {
   currentQuestion = 0;
   score = 0;
   userAnswers = [];
   clearTimeout(autoNextTimeOut);
-  nextBtn.textContent = "Next"
-  // nextBtn.style.display = "none";
+
+  nextBtn.textContent = "Next";
   scoreElement.textContent = `Score: ${score}`;
-  showQuestion();
+
+  lives = 5;
+  livesElement.textContent = `Lives: ${"❤️".repeat(lives)}`;
+
+  questionElement.textContent = `Welcome, ${name}! Get ready... 🚀`;
+  answersElement.innerHTML = "";
+
+  setTimeout(() => {
+    showQuestion();
+  }, 2000);
 }
+
+let lives = 5;
 
 // Show question
 function showQuestion() {
@@ -474,6 +516,8 @@ function showQuestion() {
 if (userAnswers[currentQuestion] !== undefined) {
   restorePreviousAnswers();
 }
+  backBtn.style.display = currentQuestion === 0 ? "none" : "inline-block";
+   nextBtn.style.display = userAnswers[currentQuestion] !== undefined ? "inline-block" : "none";
 }
 // , 4000);
 
@@ -506,6 +550,8 @@ function selectAnswer(button, answer) {
     correctSound.play().catch(error=> console.log("correct sound failed", error))
     // correctSound.play();
   } else {
+    lives--;
+    livesElement.textContent = `Lives: ${"❤️".repeat(lives)}`;
     button.classList.add("wrong");
     wrongSound.currentTime = 0;
     wrongSound.play().catch(error=> console.log("Wrong sound failed", error))
@@ -517,6 +563,9 @@ function selectAnswer(button, answer) {
   }
   explanation.textContent = quest.explanation
 
+  if (lives <= 0) {
+    setTimeout(() => showFinalScore(), 1500)
+  }
   // Delay before next question
   setTimeout(() => {
     currentQuestion++;
@@ -547,13 +596,9 @@ function reset() {
   // clear time out and pass auto next timeout
   // updated the explanationElement text content to an empty string
   answersElement.innerHTML = "";
-   backBtn.style.display = "none";
-   nextBtn.style.display = userAnswers[currentQuestion] !== undefined ? "inline-block" : "none";
    clearTimeout(autoNextTimeOut);
    explanation.textContent = "";
 }
-
-
 
 // Final score
 function showFinalScore() {
@@ -590,31 +635,22 @@ backBtn.addEventListener("click", () => {
 
 nextBtn.addEventListener("click", () => {
   if (nextBtn.textContent === "Restart Quiz") {
-    startQuiz(); // ← restart if on final screen
+    const savedName = localStorage.getItem("quizPlayerName") || "Player";
+    startQuiz(savedName);
   } else if (currentQuestion < questions.length - 1) {
     currentQuestion++;
     showQuestion();
   }
 });
 
+window.addEventListener("DOMContentLoaded", () => {
+  const savedName = localStorage.getItem("quizPlayerName");
 
-// Initialize
-startQuiz();
+  if (!savedName) {
+    // If no name, send them back
+    window.location.href = "index.html";
+    return;
+  }
 
-// textContent - You can add or update text inside the element
-{/* <p>Bye</p> */}
-
-// innerHTML - You can add more elements inside the one you already have in your HTML DOC and also updates text inside the element just like textContent.
-// document.createElement("div")
-
-
-
-
-// explainantion to the correct answers
-// add a go back button
-//add longer time when quiz ia answered
-
-
-
-//going to keep track of the score when we go back
-//need to add the explantion
+  startQuiz(savedName);
+});
